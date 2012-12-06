@@ -15,7 +15,7 @@ def test(request):
 memegroup_id=''
 
 def add_memegroup(request):
-    nonlocal memegroup_id
+    
     memegroup_name="floor 4 lol"
     memegroup_id=create_memegroup(memegroup_name)
     return HttpResponse(memegroup_id)
