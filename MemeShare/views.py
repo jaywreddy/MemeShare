@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.template.loader import get_template
 from django.template import Context
 from core import *
