@@ -119,9 +119,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'MemeShare.Meme',
-    'MemeShare.MemeGroup',
-    'MemeShare.User',
+    'MemeShare.models.Meme',
+    'MemeShare.models.MemeGroup',
+    'MemeShare.models.User',
 #    'MemeShare.User_Association',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
