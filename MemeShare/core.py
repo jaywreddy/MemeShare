@@ -11,7 +11,7 @@ def create_meme(image, memegroup):
     return image_id
 
 def add_user_to_memegroup(user_id, memegroup_id):
-    user_association(user_id=user_id, memegroup_id=memegroup_id).save()
+    User_Association(user_id=user_id, memegroup_id=memegroup_id).save()
 
 
 def create_memegroup(name):
