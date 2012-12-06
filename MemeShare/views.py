@@ -20,7 +20,7 @@ def add_memegroup(request):
     return HttpResponse(memegroup_id)
 def add_user(request):
     user_id=123
-    return HttpResponse(add_user_to_memegroup(user_id, request.get['lol']))
+    return HttpResponse(add_user_to_memegroup(user_id, request.GET['lol']))
 
 def get_user_memegroups(request):
     user_id=123
