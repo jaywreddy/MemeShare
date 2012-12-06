@@ -8,13 +8,11 @@ def hello(request):
 
 def test(request):
     t=get_template('memegroups.html')
-    print(t)
     html=t.render(Context({}))
     return HttpResponse(t)
 
 
-def add_memegroup(request):
-    
+def add_memegroup(request):    
     memegroup_name="floor 4 lol"
     memegroup_id=create_memegroup(memegroup_name)
     return HttpResponse(memegroup_id)
@@ -25,3 +23,6 @@ def add_user(request):
 def test_get_user_memegroups(request):
     user_id=123
     return HttpResponse(get_user_memegroups(user_id))
+
+
+
