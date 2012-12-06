@@ -9,7 +9,7 @@ def hello(request):
 def test(request):
     t=get_template('memegroups.html')
     html=t.render(Context({}))
-    return HttpResponse(t)
+    return HttpResponse(html)
 
 
 def add_memegroup(request):    
