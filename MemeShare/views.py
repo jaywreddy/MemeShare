@@ -10,4 +10,4 @@ def test(request):
     t=get_template('memegroups.html')
     print(t)
     html=t.render(Context({}))
-    return HttpResponse(html)
+    return HttpResponse(t)
