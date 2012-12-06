@@ -1,7 +1,7 @@
 import json
 import marshal
 import uuid
-from modals import *
+from models import *
 
 def create_meme(image, memegroup):
     image_id=generate_uuid()
