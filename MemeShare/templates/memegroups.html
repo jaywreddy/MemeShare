@@ -1,0 +1,247 @@
+<html>
+    <title>MemeShare</title>
+    <head>
+     <script type="text/javascript" src="assets/jquery.js"></script>
+     <script type="text/javascript" src="assets/cookie.js"></script>
+     <link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+     <script src="assets/js/bootstrap.min.js"></script>i
+     <style>
+       ul.thumbnails li.span4:nth-child(3n + 4) {
+           margin-left : 0px;
+       }
+     </style>
+     <script src="assets/js/jquery.filedrop.js"></script>
+     <script type="text/javascript">
+         var active_memegroup=0;
+         var active_memeupload=0;
+        
+        function populate() {
+         var uuid=jQuery.cookie("uuid");
+         jQuery.get('/get_user_memegroups', {'uuid':uuid},populate_memegroups)
+         
+         }
+        function logout() {
+         jQuery.cookie("uuid",null);
+        }
+        function populate_memegroups(data) {
+         data=$.parseJSON(data);
+         for (var i=0; i<data.length;i++){
+              var name=data[i][1];
+              var group_id=data[i][0];
+              var elem='<li id="memegroup_'+group_id+'"><a href="#"  onclick="return load_memegroup(\''+group_id+'\');">'+name+'</a></li>';
+              $("#display").append(elem);
+         }
+         }
+         function add_memegroup(e){
+              if(e.which==13){
+                  var name=$('#memegroup_name').val();
+                  jQuery.get('/create_memegroup',{'name':name});
+                  $("#display").children().not("#noremove").remove();
+                  $('#memegroup_name').val('New MemeGroup');
+                  populate();
+              }
+         }
+        function add_user_to_memegroup(e){
+            if(e.which==13){
+                if(active_memegroup==0){alert('Please select a memegroup')}
+                else{
+                    var name=$('#friend_name').val();
+                    jQuery.get('/add_user_to_memegroup',{'uuid':name,'group_id':active_memegroup});
+                    }
+               $('#friend_name').val('Add Friend to MemeGroup');
+
+        }
+      
+        }
+        function load_memegroup(group_id){
+        $(".active").attr('class','');
+        
+        $("#memegroup_"+group_id).addClass('active');
+        active_memegroup=group_id;
+        jQuery.get('/get_memegroup_memes',{'group_id':group_id},populate_memes);
+        return false;
+        }
+        function populate_memes(data){
+        $('#meme_display').empty();
+        data=$.parseJSON(data);
+        for (var i=0; i<data.length; i++){
+            var id=data[i]['id'];
+
+            var elem='<li class="span4"><a href="#" class="thumbnail" onclick="return load_meme(\''+id+'\');""><image src="/thumbnail/'+id+'.jpg" ></a></li>';
+            $("#meme_display").append(elem);
+        }
+        }
+        function load_meme(id){
+           
+            $('#meme_image_display').attr('src','/image/'+id+'.jpg')
+            document.getElementById('comments').innerHTML='<div  class="fb-comments" data-href="MemeShare.com/meme/'+id+'" data-num-posts="20" data-width="480"></div>'
+            
+            
+            FB.XFBML.parse(document.getElementById('comments'));
+            $('#memeModal').modal('show');
+
+            
+           
+            return false;
+        }
+        function load_upload_modal(){
+           if(active_memegroup!=0){
+               $('#upload_group_id').val(active_memegroup)
+               $('#uploadModal').modal('show');
+           }
+           else{alert('select a MemeGroup')
+           return false;}
+        }
+        function parse_file(e){
+           var files=e.target.files;
+           active_memeupload=files
+           var reader=new FileReader();
+           reader.onload=preview_image;
+           reader.readAsDataURL(files[0]);
+        }
+        function preview_image(evt){
+          $('#preview').attr('src',evt.target.result)
+        }
+        function upload_file(){
+          if(active_memeupload==0){alert('please upload file')}
+          else{
+             formData=new FormData();
+             formData.append('meme_file',active_memeupload);
+             formData.append('group_id',active_memegroup);
+             $.ajax({
+                 url: 'upload',
+                 data: formData,
+                 cache: false,
+                 contentType: false,
+                 processData: false,
+                 type: 'POST',
+                 success: function(data){
+                        load_memegroup(active_memegroup)
+                        $('#preview').attr('src','http://socialmedi8r.com/wp-content/uploads/2012/09/success.jpg') 
+                  }
+              });
+        }
+        }
+        function createImage(file){
+            var image=$('#preview')
+            var reader=new FileReader();
+            image.width=100;
+            image.height=100;
+            reader.onload=function(e){
+                image.attr('src',e.target.result);
+               
+            };
+            reader.readAsDataURL(file);
+            active_memeupload=file;
+        }
+// Drag and drop functionality
+//        function load_dnd(e){
+//        var file = e.dataTransfer.files[0];
+//        createImage(file);
+//       }
+
+        function load_input(e){
+        var file= e.target.files[0];
+        createImage(file);
+        return false;
+       }
+    //Facebook stuff:
+
+
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '274216866034310', // App ID
+            channelUrl : 'localhost/channel.html', // Channel File
+            status     : true, // check login status
+            cookie     : true, // enable cookies to allow the server to access the session
+            xfbml      : true  // parse XFBML
+          });
+        };
+
+        (function(d){
+           var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+           if (d.getElementById(id)) {return;}
+           js = d.createElement('script'); js.id = id; js.async = true;
+           js.src = "//connect.facebook.net/en_US/all.js";
+           ref.parentNode.insertBefore(js, ref);
+         }(document));
+
+ 
+  
+    </script>
+    <style type="text/css">
+        
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    
+    </style>
+    </head>
+    <body onload='populate()'>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="brand" href="http://localhost/login">Home</a>
+                <a class="brand" href="#" onclick="load_upload_modal();">Create Meme</a>
+                <a class="brand" href="/" onclick="logout();">Logout</a>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid"> 
+            <div class="span3">
+                <div class="well sidebar-nav">
+                     <ul id="display" class="nav nav-list">
+                         <li id="noremove" class="nav-header">MemeGroups<li>
+                         <li id="noremove" class="">
+                             <input id='memegroup_name' type='text' class="span9"  placeholder="New MemeGroup" onkeypress="add_memegroup(event);"> 
+                         </li>
+                     <ul>
+                </div>
+            </div>
+            <div class="span6">
+                 <div class="row-fluid">
+                      <input id='friend_name' type='text' class="span12"  placeholder="Add Friend to MemeGroup" onkeypress="add_user_to_memegroup(event);">
+                 </div>
+                 <div class="row-fluid">           
+                 <ul id="meme_display" class="thumbnails"></ul>
+                 </div>
+            </div>
+       </div>
+    </div>
+<!--Meme display Modal -->
+    <div id="memeModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Modal header</h3>
+        </div>
+        <div class="modal-body">
+            <img id="meme_image_display" class="thumbnail" src="" >
+            <div id=comments>
+            
+            <div>
+        </div>
+     </div>
+
+<!-- Meme upload/creation Modal-->
+      <div id="uploadModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Create a Meme!</h3>
+        </div>
+        <div class="modal-body">
+            <div id="dropbox">
+                <img id="preview" src=""/>
+                  <input id="image_upload" type='file' onchange='load_input(event)'/>
+
+                <button type="button" onclick="upload_file();">Submit</button>
+            </div>
+        </div>
+     </div>
+ </body>
+</html>
+
