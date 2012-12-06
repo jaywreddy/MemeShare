@@ -8,7 +8,10 @@ from MemeShare.views import *
 urlpatterns = patterns('',
 
       ('^hello/$', hello),
-      ('^test/$', test)
+      ('^test/$', test),
+      ('^testadd/$', add_memegroup),
+      ('^testadduser/$', add_user),
+      ('^get/$', get_user_memegroups),
     # Examples:
     # url(r'^$', 'MemeShare.views.home', name='home'),
     # url(r'^MemeShare/', include('MemeShare.foo.urls')),
