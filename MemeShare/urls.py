@@ -11,7 +11,7 @@ urlpatterns = patterns('',
       ('^test/$', test),
       ('^testadd/$', add_memegroup),
       ('^testadduser/$', add_user),
-      ('^get/$', get_user_memegroups),
+      ('^get/$', test_get_user_memegroups),
     # Examples:
     # url(r'^$', 'MemeShare.views.home', name='home'),
     # url(r'^MemeShare/', include('MemeShare.foo.urls')),

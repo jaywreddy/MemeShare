@@ -22,6 +22,6 @@ def add_user(request):
     user_id=123
     return HttpResponse(add_user_to_memegroup(user_id, request.GET['lol']))
 
-def get_user_memegroups(request):
+def test_get_user_memegroups(request):
     user_id=123
-    return HttpResponse(core.get_user_memegroups(user_id))
+    return HttpResponse(get_user_memegroups(user_id))
