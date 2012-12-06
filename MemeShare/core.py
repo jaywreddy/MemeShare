@@ -20,7 +20,7 @@ def create_memegroup(name):
     return memegroup_id
 
 def get_user_memegroups(user_id):
-    memegroups=user_association.objects.filter(user_id=user_id)
+    memegroups=User_Association.objects.filter(user_id=user_id)
     grouplist=[]
     for memegroup in memegroups:
         memegroup_id=memegroup.memegroup_id
