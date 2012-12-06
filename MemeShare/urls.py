@@ -1,10 +1,13 @@
 from django.conf.urls import patterns, include, url
+from MemeShare.views import *
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+
+      ('^hello/$', hello)
     # Examples:
     # url(r'^$', 'MemeShare.views.home', name='home'),
     # url(r'^MemeShare/', include('MemeShare.foo.urls')),
