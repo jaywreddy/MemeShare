@@ -25,7 +25,7 @@ def get_user_memegroups(user_id):
     for memegroup in memegroups:
         memegroup_id=memegroup.memegroup_id
         name=get_memegroup_name(memegroup_id)
-        grouplist.append(memegroup_id, name)
+        grouplist.append([memegroup_id, name])
     if len(grouplist)==0:
         return None
     return json.dumps(grouplist)
