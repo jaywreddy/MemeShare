@@ -15,6 +15,6 @@ class User(models.Model):
     user_id=models.CharField(max_length=255)
     #info...
 
-class user_association(models.Model):
+class User_Association(models.Model):
     user_id=models.CharField(max_length=255)
     memegroup_id=models.CharField(max_length=255)
