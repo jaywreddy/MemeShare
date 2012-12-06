@@ -8,5 +8,5 @@ def hello(request):
 
 def test(request):
     t=get_template('memegroups.html')
-    html=t.render()
+    html=t.render({})
     return HttpResponse(html)
