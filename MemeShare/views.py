@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpRequest
 from django.template.loader import get_template
 from django.template import Context
 from core import *
+from django.views.decorators.csrf import csrf_exempt
 
 def hello(request):
     return HttpResponse("Hello world")
@@ -14,7 +15,7 @@ def test(request):
 def home(request):
     html=get_template('index.html').render(Context({}))
     return HttpResponse(html)
-
+@csrf_exempt
 def login(request):
     if (request.POST and 'username' in request.POST):
         user_id=request.POST['username']
