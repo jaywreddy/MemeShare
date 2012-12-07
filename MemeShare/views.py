@@ -35,7 +35,7 @@ def route_create_memegroup(request):
     uuid=request.COOKIES['uuid'] #cookie
     name=request.GET['name']
     group_id=create_memegroup(name)
-    add_user_to_mememgroup(uuid, group_id)
+    add_user_to_memegroup(uuid, group_id)
     return HttpResponse('True')
 
 def route_get_memegroup_memes(request):
