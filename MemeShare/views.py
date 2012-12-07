@@ -27,8 +27,8 @@ def login(request):
     return response
 
 def route_add_user_to_memegroup(request):
-    user_id=request.GET('uuid') 
-    group_id=request.GET('group_id')
+    user_id=request.GET['uuid']
+    group_id=request.GET['group_id']
     return HttpResponse(add_user_to_memegroup(user_id, group_id))  
 
 def route_create_memegroup(request):
