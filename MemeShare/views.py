@@ -5,7 +5,7 @@ from core import *
 from django.views.decorators.csrf import csrf_exempt
 
 def hello(request):
-    return HttpResponse("Hello world")
+    return HttpResponse("Hello cloud9")
 
 def test(request):
     t=get_template('memegroups.html')
